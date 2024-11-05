@@ -1,0 +1,24 @@
+﻿@model TutorApp.Website.Models.StudentFile
+
+<h2>Upload File for Topic</h2>
+
+@* @using (Html.BeginForm("UploadFiles", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" })) 
+{
+    @Html.AntiForgeryToken()
+
+    @Html.Hidden("TopicID", ViewBag.TopicID)
+
+    <div class="form-group">
+        @Html.Label("Choose File", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input type="file" name="file" id="file" class="form-control" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Upload" class="btn btn-primary" />
+        </div>
+    </div>
+}
+ *@

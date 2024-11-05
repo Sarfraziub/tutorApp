@@ -1,0 +1,43 @@
+﻿@model IEnumerable<TutorApp.Website.Models.Student>
+
+<h2>Approve Students</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Assign Class</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.Name</td>
+                <td>@student.Email</td>
+                <td>
+                    @Html.DropDownList("ClassID_" + student.StudentId, new SelectList(ViewBag.Classes, "ClassID", "ClassName"), "--Select Class--", new { @class = "form-control" })
+                </td>
+                <td>
+                    <button type="button" class="btn btn-success" onclick="approveStudent(@student.StudentId)">Approve</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    function approveStudent(studentId) {
+        var classId = $('#ClassID_' + studentId).val();
+        if (classId == "") {
+            alert("Please select a class before approving.");
+            return;
+        }
+
+        $.post('@Url.Action("ApproveStudent", "Admin")', { studentId: studentId, classId: classId }, function () {
+            window.location.reload();
+        });
+    }
+</script>

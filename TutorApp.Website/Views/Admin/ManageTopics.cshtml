@@ -1,0 +1,32 @@
+﻿@model IEnumerable<TutorApp.Website.Models.Topic>
+
+<h2>Manage Topics for Subject: @ViewBag.SubjectName</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Topic Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var topic in Model)
+        {
+            <tr>
+                <td>@topic.TopicName</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@* @using (Html.BeginForm("AddTopic", "Admin", FormMethod.Post)) 
+{
+    <div class="form-group">
+        <label for="TopicName">Topic Name:</label>
+        <input type="text" name="TopicName" id="TopicName" class="form-control" required />
+    </div>
+
+    @Html.Hidden("SubjectID", ViewBag.SubjectID)
+
+    <input type="submit" value="Add Topic" class="btn btn-primary" />
+}
+ *@

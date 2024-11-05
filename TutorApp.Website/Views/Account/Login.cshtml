@@ -1,0 +1,120 @@
+﻿@model TutorApp.Website.ViewModels.LoginViewModel
+
+@{
+    // Do not use any layout page
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #316b73;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            width: 400px;
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+            .login-form input {
+                padding: 10px;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 16px;
+            }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
+
+            .button-group button {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+
+                .button-group button[type="reset"] {
+                    background-color: #666;
+                    color: #fff;
+                }
+
+                .button-group button[type="submit"] {
+                    background-color: #2e8b99;
+                    color: #fff;
+                }
+
+                .button-group button:hover {
+                    opacity: 0.9;
+                }
+
+        .text-danger {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+   @*  <div class="login-container">
+        <form asp-action="Login" method="post" class="login-form">
+            <input asp-for="Email" placeholder="Email" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+
+            <input asp-for="Password" type="password" placeholder="Password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+
+            <div class="button-group">
+                <button type="reset">Reset</button>
+                <button type="submit">Login</button>
+            </div>
+        </form>
+    </div> *@
+
+    <div class="login-container">
+        <form asp-action="Login" method="post" class="login-form">
+            <input asp-for="Email" placeholder="Email" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+
+            <input asp-for="Password" type="password" placeholder="Password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+
+            <div class="button-group">
+                <button type="reset">Reset</button>
+                <button type="submit">Login</button>
+            </div>
+        </form>
+
+        <div class="text-center mt-3">
+            <small>Don't have an account? <a asp-controller="Account" asp-action="Register">Register here</a></small>
+        </div>
+    </div>
+
+</body>
+</html>
