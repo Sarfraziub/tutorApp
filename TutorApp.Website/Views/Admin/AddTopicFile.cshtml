@@ -1,0 +1,32 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model FileUploadModel
+<div class="isotope_filters isotope-courses-streampag">
+    <a href="dashboard" data-filter="*" class="isotope_filters_button " onclick="toDashboard()">Home</a>
+    <a href="#" data-filter="*" class="isotope_filters_button classes_btn">
+        @ViewBag.SubjectName
+    </a>
+    <a href="#" data-filter="*" class="isotope_filters_button classes_btn">
+        @ViewBag.TopicName
+    </a>
+    <a href="#" data-filter="*" class="isotope_filters_button classes_btn active">
+        Add File
+    </a>
+</div>
+<form method="post" enctype="multipart/form-data" asp-action="AddTopicFile">
+    <input type="hidden" asp-for="ClassId" />
+    <input type="hidden" asp-for="SubjectId" />
+    <input type="hidden" asp-for="TopicId" />
+    <div class="form-group">
+        <label asp-for="FileName">File Name:</label>
+        <input type="text" class="form-control" asp-for="FileName" style="border: 0.5px solid lightgrey;">
+    </div>
+    <div class="form-group" style="margin-bottom: 10px;">
+        <label asp-for="File">File:</label>
+        <input type="file" accept=".pdf, .docx, .doc" class="form-control file-upload" asp-for="File">
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </div>
+</form>

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<TutorApp.Website.Models.FileModel>
+@{
+    ViewBag.ClassId = ViewBag.ClassId;
+    ViewBag.SubjectId = ViewBag.SubjectId;
+    ViewBag.TopicId = ViewBag.TopicId;
+}
+
+
+<div class="isotope_filters isotope-courses-streampag">
+    <a href="dashboard" data-filter="*" class="isotope_filters_button " onclick="toDashboard()">Home</a>
+    <a href="#" data-filter="*" class="isotope_filters_button classes_btn">
+        @ViewBag.SubjectName
+    </a>
+    <a href="#" data-filter="*" class="isotope_filters_button classes_btn">
+        @ViewBag.TopicName
+    </a>
+    <a href="#" data-filter="*" class="isotope_filters_button classes_btn active">
+        Files
+    </a>
+</div>
+<button type="button" class="btn btn-link nav-link text-dark" style="margin-bottom: 15px;" onclick="addFile(@ViewBag.TopicId)">Add File</button>
+<table class="table width_100per">
+    <thead>
+        <tr>
+            <th>Sr. No.</th>
+            <th>File Name</th>
+            <th>Download</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var file in Model)
+        {
+            <tr style="text-align:center">
+                <td>@file.SrNo</td>
+                <td>@file.FileName</td>
+                <td><a href="@file.FilePath" download="@file.FileName">Download</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    function addFile(topicId) {
+        window.location.href = `AddTopicFile?topicId=${topicId}`;
+    }
+</script>

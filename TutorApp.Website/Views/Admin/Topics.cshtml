@@ -1,0 +1,55 @@
+﻿@model List<TutorApp.Website.Models.Topic>
+@{
+}
+<div class="isotope_filters isotope-courses-streampag">
+    <a href="dashboard" data-filter="*" class="isotope_filters_button " onclick="toDashboard()">Home</a>
+    <a href="#" data-filter="*" class="isotope_filters_button classes_btn">
+        @ViewBag.SubjectName
+    </a>
+    <a href="#" data-filter="*" class="isotope_filters_button classes_btn active">
+        Topics
+    </a>
+</div>
+<button type="button" class="btn btn-link nav-link text-dark" style="margin-bottom: 15px;" onclick="addClass(@ViewBag.SubjectId)">Add Topic</button>
+<div class="isotope_wrap" data-columns="4">
+    @foreach (var _class in Model)
+    {
+        <div id="subject-@_class.TopicId" class="subject-topics">
+            <!-- classes item -->
+            <div class="isotope_item isotope_item_courses isotope_column_3 flt_@_class.TopicId">
+                <article class="post_item post_item_courses odd">
+                    <div class="post_content isotope_item_content ih-item colored square effect_dir left_to_right">
+                        <div class="post_featured img_@_class.TopicId">
+                            <!-- Remove href="javascript:void(0);" -->
+                            <a href="javascript:void(0)" onclick="selectTopics(@_class.TopicId)">
+                                <img alt="@_class.TopicId" src="https://img.freepik.com/premium-photo/education-elements-illustration-with-education-day-back-school-poster-earth-globe-graduation-cap-pencil-book-white-background_551826-23999.jpg?semt=ais_hybrid">
+                            </a>
+                            <!-- Updated Topic Link -->
+                            <h4 class="post_title">
+                                @(_class.TopicName)
+                                @* @Html.ActionLink(_class.ClassName, "ViewTopic", "Student", null) *@
+                            </h4>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <!-- /Topic item -->
+        </div>
+
+    }
+</div>
+<script>
+    function addClass(subjectId) {
+        window.location.href = "AddTopic?subjectId=" + subjectId;
+    }
+    var selectedClassId = null;
+    var selectedClassName = '';
+
+    function selectTopics(topicId) {
+        window.location.href = `TopicFiles?topicId=${topicId}`;
+    }
+
+    function toDashboard() {
+        window.location.href = `dashboard`;
+    }
+</script>

@@ -6,7 +6,7 @@ using TutorApp.Website.ViewModels;
 
 namespace TutorApp.Website.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -17,6 +17,11 @@ namespace TutorApp.Website.Controllers
         }
 
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Contact()
         {
             return View();
         }
