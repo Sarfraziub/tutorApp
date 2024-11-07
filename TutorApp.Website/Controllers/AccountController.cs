@@ -15,11 +15,13 @@ namespace TutorApp.Website.Controllers
     {
         private readonly SchoolDbContext _context;
         private readonly PasswordHasher<Student> _passwordHasher;
+        private readonly PasswordHasher<Admin> _passwordAdminHasher;
 
         public AccountController(SchoolDbContext context)
         {
             _context = context;
             _passwordHasher = new PasswordHasher<Student>();
+            _passwordAdminHasher = new PasswordHasher<Admin>();
         }
 
         // GET: Register
@@ -109,6 +111,8 @@ namespace TutorApp.Website.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+        // POST: Login
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()

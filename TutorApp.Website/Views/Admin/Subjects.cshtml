@@ -1,0 +1,52 @@
+﻿@model List<TutorApp.Website.Models.Subject>
+@{
+}
+<div class="isotope_filters isotope-courses-streampag">
+    <a href="dashboard" onclick="toDashboard()" class="isotope_filters_button ">Home</a>
+    <a href="Classes" onclick="toClasses()" data-filter="*" class="isotope_filters_button classes_btn">
+        @ViewBag.ClassName
+    </a>
+    <a href="#" data-filter="*" class="isotope_filters_button active">
+        Subjects
+    </a>
+</div>
+<button type="button" class="btn btn-link nav-link text-dark" style="margin-bottom: 15px;" onclick="addSubject()">Add Subject</button>
+<div class="isotope_wrap" data-columns="4">
+    @foreach (var _class in Model)
+    {
+        <div id="subject-@_class.ClassId" class="subject-topics">
+            <!-- Topic item -->
+            <div class="isotope_item isotope_item_courses isotope_column_3 flt_@_class.SubjectId">
+                <article class="post_item post_item_courses odd">
+                    <div class="post_content isotope_item_content ih-item colored square effect_dir left_to_right">
+                        <div class="post_featured img">
+                            <a href="javascript:void(0)">
+                                <img alt="@_class.SubjectName" src="https://img.freepik.com/premium-photo/education-elements-illustration-with-education-day-back-school-poster-earth-globe-graduation-cap-pencil-book-white-background_551826-23999.jpg?semt=ais_hybrid">
+                            </a>
+                            <h4 class="post_title">
+                                @_class.SubjectName
+                            </h4>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <!-- /Topic item -->
+        </div>
+
+    }
+</div>
+<script>
+    $(document).ready(function () {
+        debugger;
+    });
+    function addSubject() {
+        debugger;
+        window.location.href = "addSubject?classId=@ViewBag.ClassId";
+    }
+    function toClasses(){
+        window.location.href = "classes";
+    }
+    function toDashboard() {
+        window.location.href = "dashboard";
+    }
+</script>

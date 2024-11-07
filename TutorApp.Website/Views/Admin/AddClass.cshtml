@@ -1,0 +1,21 @@
+﻿@model TutorApp.Website.Models.Class
+@{
+}
+<div class="isotope_filters isotope-courses-streampag">
+    <a href="Classes" data-filter="*" class="isotope_filters_button active" onclick="toDashboard()">Home</a>
+        <a href="#" data-filter="*" class="isotope_filters_button">
+            Add Class
+        </a>
+</div>
+<form method="post" asp-action="addClass">
+    <div class="form-group">
+        <label for="className" style="font-weight: 700;">Class Name:</label>
+        <input asp-for="ClassName" type="text" class="form-control" placeholder="Enter class name" style="border: 0.5px solid lightgrey;">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+<script>
+    function toDashboard() {
+        window.location.href = `dashboard`;
+    }
+</script>

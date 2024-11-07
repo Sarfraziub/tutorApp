@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using TutorApp.Website.Models;
 
 namespace TutorApp.Website.Context
@@ -7,6 +8,7 @@ namespace TutorApp.Website.Context
     {
         public SchoolDbContext(DbContextOptions<SchoolDbContext> options) : base(options) { }
 
+        public DbSet<Admin> Admins { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Class> Classes { get; set; }
         public DbSet<Subject> Subjects { get; set; }

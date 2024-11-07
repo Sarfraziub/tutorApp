@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<!-- /Page title -->
+<!-- Content with sidebar -->
+ <div class="isotope_wrap" data-columns="2">
+                <div class="subject-topics">
+                        <!-- Topic item -->
+                        <div class="isotope_item isotope_item_courses isotope_column_3 flt_student">
+                            <article class="post_item post_item_courses odd">
+                                <div class="post_content isotope_item_content ih-item colored square effect_dir left_to_right">
+                                    <div class="post_featured img">
+                        <a href="@Url.Action("Students", "Admin")">
+                                            <img alt="" src="https://img.freepik.com/premium-photo/education-elements-illustration-with-education-day-back-school-poster-earth-globe-graduation-cap-pencil-book-white-background_551826-23999.jpg?semt=ais_hybrid">
+                                        </a>
+                                        <h4 class="post_title">
+                                            @Html.ActionLink("Students", "Students", "Admin")
+                                        </h4>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <div class="isotope_item isotope_item_courses isotope_column_3 flt_classes">
+                            <article class="post_item post_item_courses odd">
+                                <div class="post_content isotope_item_content ih-item colored square effect_dir left_to_right">
+                                    <div class="post_featured img">
+                        <a href="@Url.Action("Classes", "Admin")">
+                                            <img alt="classes" src="https://img.freepik.com/premium-photo/education-elements-illustration-with-education-day-back-school-poster-earth-globe-graduation-cap-pencil-book-white-background_551826-23999.jpg?semt=ais_hybrid">
+                                        </a>
+                                        <h4 class="post_title">
+                                            @Html.ActionLink("Classes", "Classes", "Admin")
+                                        </h4>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <!-- /Topic item -->
+                </div>
+            </div>
+     
+
