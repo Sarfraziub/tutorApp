@@ -22,10 +22,13 @@ namespace TutorApp.Website.Controllers
         public IActionResult Index()
         {
             GeneralModel model = new GeneralModel();
-            model.LogoUrl = _context.Settings.Where(x => x.Key == "logo-url").FirstOrDefault().Value;
-            model.Phone = _context.Settings.Where(x => x.Key == "phone").FirstOrDefault().Value;
-            model.Email = _context.Settings.Where(x => x.Key == "email").FirstOrDefault().Value;
-            model.Address = _context.Settings.Where(x => x.Key == "address").FirstOrDefault().Value;
+
+            // Use nullable navigation and null-coalescing operator
+            model.LogoUrl = _context.Settings.FirstOrDefault(x => x.Key == "logo-url")?.Value ?? string.Empty;
+            model.Phone = _context.Settings.FirstOrDefault(x => x.Key == "phone")?.Value ?? string.Empty;
+            model.Email = _context.Settings.FirstOrDefault(x => x.Key == "email")?.Value ?? string.Empty;
+            model.Address = _context.Settings.FirstOrDefault(x => x.Key == "address")?.Value ?? string.Empty;
+
             return View(model);
         }
 
