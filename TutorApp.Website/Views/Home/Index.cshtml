@@ -1,4 +1,5 @@
-﻿@{
+﻿@model TutorApp.Website.ViewModels.GeneralModel
+@{
 	Layout = null;
 }
 <!DOCTYPE html>
@@ -75,7 +76,7 @@
 								</li> *@
 							</ul>
 						</div>
-						<div class="menu_user_area menu_user_left menu_user_contact_area">Contact us on 0 800 123-4567 or <a href="#">support@themerex.net</a></div>
+						<div class="menu_user_area menu_user_left menu_user_contact_area">Contact us on @Model.Phone or <a href="#">@Model.Email</a></div>
 					</div>
 				</div>
 				<!-- /User menu -->
@@ -85,8 +86,8 @@
 						<!-- Logo -->
 						<div class="logo">
 							<a href="index.html">
-								<img src="http://placehold.it/259x30" class="logo_main" alt="">
-								<img src="http://placehold.it/259x30" class="logo_fixed" alt="">
+								<img src="@Model.LogoUrl" class="logo_main" alt="">
+								<img src="@Model.LogoUrl" class="logo_fixed" alt="">
 							</a>
 						</div>
 						<!-- Logo -->
@@ -111,16 +112,16 @@
 						<nav class="menu_main_nav_area">
 							<ul id="menu_main" class="menu_main_nav">
 								<li class="menu-item menu-item-has-children current-menu-ancestor current-menu-parent">
-									<a href="index.html">Homepage</a>
-									<ul class="sub-menu">
+									<a href="/home/index">Homepage</a>
+									@* <ul class="sub-menu">
 										<li class="menu-item current-menu-item page_item current_page_item"><a href="index.html">Homepage Wide</a></li>
 										<li class="menu-item"><a href="homepage-2.html">Homepage Boxed</a></li>
 										<li class="menu-item"><a href="homepage-3.html">Homepage Photos</a></li>
-									</ul>
+									</ul> *@
 								</li>
 								<li class="menu-item menu-item-has-children">
-									<a href="#">Features</a>
-									<ul class="sub-menu">
+									<a href="/home/contact">Contact Us</a>
+									@* <ul class="sub-menu">
 										<li class="menu-item"><a href="typography.html">Typography</a></li>
 										<li class="menu-item"><a href="shortcodes.html">Shortcodes</a></li>
 										<li class="menu-item"><a href="video-tutorials.html">Video Tutorials</a></li>
@@ -129,11 +130,11 @@
 										<li class="menu-item"><a href="/home/contact">Contact Us</a></li>
 										<li class="menu-item"><a href="not-existing-page.html">Page 404</a></li>
 										<li class="menu-item"><a href="not-existing-page-2.html">Page 404 (Style 2)</a></li>
-									</ul>
+									</ul> *@
 								</li>
 								<li class="menu-item menu-item-has-children">
-									<a href="courses-streampage.html">Courses</a>
-									<ul class="sub-menu">
+									<a href="">Subjects</a>
+									@* <ul class="sub-menu">
 										<li class="menu-item"><a href="courses-streampage.html">All courses</a></li>
 										<li class="menu-item"><a href="free-course.html">Free course</a></li>
 										<li class="menu-item"><a href="paid-course.html">Paid course</a></li>
@@ -145,9 +146,9 @@
 												<li class="menu-item"><a href="lesson-from-paid-course.html">Lesson from paid course</a></li>
 											</ul>
 										</li>
-									</ul>
+									</ul> *@
 								</li>
-								<li class="menu-item menu-item-has-children">
+								@* <li class="menu-item menu-item-has-children">
 									<a href="team-members.html">Teachers</a>
 									<ul class="sub-menu">
 										<li class="menu-item"><a href="team-members.html">Teachers Team</a></li>
@@ -191,7 +192,7 @@
 										</li>
 									</ul>
 								</li>
-								<li class="menu-item"><a href="products.html">Shop</a></li>
+								<li class="menu-item"><a href="products.html">Shop</a></li> *@
 							</ul>
 						</nav>
 						<!-- /Navigation -->

@@ -29,6 +29,9 @@
                                 @(_class.ClassName)
                                 @* @Html.ActionLink(_class.ClassName, "ViewTopic", "Student", null) *@
                             </h4>
+                            <span class="delete-icon position-absolute" style="cursor: pointer" onclick="deleteClass(@_class.ClassId)">
+                                <img alt="" src="~/images/trash-icon.png" style="float:right;width: 14px;" />
+                            </span>
                         </div>
                     </div>
                 </article>
@@ -59,5 +62,21 @@
     }
     function toDashboard() {
         window.location.href = `dashboard`;
+    }
+    function deleteClass(classId) {
+        if (confirm("Are you sure you want to delete this class?")) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("DeleteClass", "Admin")",
+                data: { classId: classId },
+                success: function (response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            });
+        }
     }
 </script>

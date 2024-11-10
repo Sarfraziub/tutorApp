@@ -8,10 +8,10 @@
 
 <div class="isotope_filters isotope-courses-streampag">
     <a href="dashboard" data-filter="*" class="isotope_filters_button " onclick="toDashboard()">Home</a>
-    <a href="#" data-filter="*" class="isotope_filters_button classes_btn">
+    <a href="#" data-filter="*" class="isotope_filters_button classes_btn" onclick="toSubjects()">
         @ViewBag.SubjectName
     </a>
-    <a href="#" data-filter="*" class="isotope_filters_button classes_btn">
+    <a href="#" data-filter="*" class="isotope_filters_button classes_btn" onclick="toTopics()">
         @ViewBag.TopicName
     </a>
     <a href="#" data-filter="*" class="isotope_filters_button classes_btn active">
@@ -25,6 +25,7 @@
             <th>Sr. No.</th>
             <th>File Name</th>
             <th>Download</th>
+            <th>Delete</th>
         </tr>
     </thead>
     <tbody>
@@ -34,6 +35,7 @@
                 <td>@file.SrNo</td>
                 <td>@file.FileName</td>
                 <td><a href="@file.FilePath" download="@file.FileName">Download</a></td>
+                <td><a href="javascript:void(0)" onclick="deleteFile(@ViewBag.TopicId,'@file.FileName')">Delete</a></td>
             </tr>
         }
     </tbody>
@@ -41,5 +43,30 @@
 <script>
     function addFile(topicId) {
         window.location.href = `AddTopicFile?topicId=${topicId}`;
+    }
+    function toSubjects() {
+        window.location.href = `subjects?classId=${@ViewBag.ClassId}`;
+    }
+    function toTopics() {
+        window.location.href = `topics?subjectId=${@ViewBag.SubjectId}`;
+    }
+    function toDashboard() {
+        window.location.href = `dashboard`;
+    }
+    function deleteFile(topicId, fileName) {
+        if (confirm("Are you sure you want to delete this file?")) {
+            $.ajax({
+                type: "POST",
+                url: "/Admin/DeleteTopicFile",
+                data: { topicId: topicId, fileName: fileName },
+                success: function (response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            });
+        }
     }
 </script>

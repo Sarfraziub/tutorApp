@@ -26,6 +26,9 @@
                             <h4 class="post_title">
                                 @_class.SubjectName
                             </h4>
+                            <span class="delete-icon position-absolute" style="cursor: pointer" onclick="deleteSubject(@_class.SubjectId)">
+                                <img alt="" src="~/images/trash-icon.png" style="float:right;width: 14px;" />
+                            </span>
                         </div>
                     </div>
                 </article>
@@ -51,5 +54,21 @@
     }
     function selectSubject(subjectId){
         window.location.href = `topics?subjectId=${subjectId}`;
+    }
+    function deleteSubject(subjectId) {
+        if (confirm("Are you sure you want to delete this subject?")) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("DeleteSubject", "Admin")",
+                data: { subjectId: subjectId },
+                success: function (response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            });
+        }
     }
 </script>

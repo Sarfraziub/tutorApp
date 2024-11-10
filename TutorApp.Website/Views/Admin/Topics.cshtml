@@ -3,7 +3,7 @@
 }
 <div class="isotope_filters isotope-courses-streampag">
     <a href="dashboard" data-filter="*" class="isotope_filters_button " onclick="toDashboard()">Home</a>
-    <a href="#" data-filter="*" class="isotope_filters_button classes_btn">
+    <a href="#" data-filter="*" class="isotope_filters_button classes_btn" onclick="toSubjects()">
         @ViewBag.SubjectName
     </a>
     <a href="#" data-filter="*" class="isotope_filters_button classes_btn active">
@@ -28,7 +28,9 @@
                             <h4 class="post_title">
                                 @(_class.TopicName)
                                 @* @Html.ActionLink(_class.ClassName, "ViewTopic", "Student", null) *@
-                            </h4>
+                            </h4>  <span class="delete-icon position-absolute" style="cursor: pointer" onclick="deleteTopic(@_class.TopicId)">
+                                <img alt="" src="~/images/trash-icon.png" style="float:right;width: 14px;" />
+                            </span>
                         </div>
                     </div>
                 </article>
@@ -51,5 +53,24 @@
 
     function toDashboard() {
         window.location.href = `dashboard`;
+    }
+    function toSubjects() {
+        window.location.href = `subjects?classId=${@ViewBag.ClassId}`;
+    }
+    function deleteTopic(topicId) {
+        if (confirm("Are you sure you want to delete this topic?")) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("DeleteTopic", "Admin")",
+                data: { topicId: topicId },
+                success: function (response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            });
+        }
     }
 </script>

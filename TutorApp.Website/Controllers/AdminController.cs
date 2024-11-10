@@ -9,6 +9,9 @@ using TutorApp.Website.Context;
 using TutorApp.Website.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using NuGet.Versioning;
 
 namespace TutorApp.Website.Controllers
 {
@@ -16,9 +19,11 @@ namespace TutorApp.Website.Controllers
     {
         private readonly SchoolDbContext _context;
 
+        private readonly PasswordHasher<Student> _passwordHasher;
         public AdminController(SchoolDbContext context)
         {
             _context = context;
+            _passwordHasher = new PasswordHasher<Student>();
         }
         [Authorize]
         public IActionResult Dashboard()
@@ -69,18 +74,44 @@ namespace TutorApp.Website.Controllers
         public IActionResult AddStudent()
         {
             Student student = new Student();
+            ViewBag.Students = _context.Students.ToList();
+
             return View(student);
+        }
+        [Authorize]
+        public IActionResult EditStudent(int studentId)
+        {
+            ViewBag.Students = _context.Students.ToList();
+            Student student = new Student();
+            student = _context.Students.Where(x=>x.StudentId == studentId).FirstOrDefault();
+            return View("AddStudent", student);
         }
         [Authorize]
         [HttpPost]
         public IActionResult AddStudent(Student student)
         {
-            if(student!=null && !string.IsNullOrEmpty(student.Name))
+            if(student.StudentId==0&&(student.ConfirmPassword != student.PasswordHash || string.IsNullOrEmpty(student.ConfirmPassword)))
             {
-                _context.Students.Add(student);
+                ViewBag.Students = _context.Students.ToList();
+                ViewBag.errorMsg = "passord & confirm password are mismatch!";
+                return View(student);
+            }
+            if(student!=null && !string.IsNullOrEmpty(student.Name) && !string.IsNullOrEmpty(student.Email) && student.ClassId>0)
+            {
+                if (student.StudentId == 0)
+                {
+                    student.IsApproved = true;
+                    student.PasswordHash = _passwordHasher.HashPassword(student, student.PasswordHash);
+                        _context.Students.Add(student);
+                }
+                else {
+                        _context.Students.Update(student);
+                }
                 _context.SaveChanges();
                 return RedirectToAction("Students");
             }
+            ViewBag.Students = _context.Students.ToList();
+            ViewBag.errorMsg = "please fill all fields!";
             return View(student);
         }
         [Authorize]
@@ -108,6 +139,7 @@ namespace TutorApp.Website.Controllers
             var subjects = _context.Topics.Where(x => x.SubjectId== subjectId).ToList();
             ViewBag.SubjectName = _context.Subjects.Where(x => x.SubjectId == subjectId).FirstOrDefault().SubjectName;
             ViewBag.SubjectId = subjectId;
+            ViewBag.ClassId = _context.Subjects.Where(x => x.SubjectId == subjectId).FirstOrDefault().ClassId;
             return View(subjects);
         }
         [Authorize]
@@ -198,7 +230,92 @@ namespace TutorApp.Website.Controllers
 
             return RedirectToAction("TopicFiles", new { classId = model.ClassId, subjectId = model.SubjectId, topicId = model.TopicId });
         }
-       
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult DeleteTopicFile(int topicId, string fileName)
+        {
+            string dirPath = Path.Combine("wwwroot", "classes", _context.Subjects.Where(x => x.SubjectId == _context.Topics.Where(t => t.TopicId == topicId).FirstOrDefault().SubjectId).FirstOrDefault().ClassId.ToString(),
+                _context.Topics.Where(t => t.TopicId == topicId).FirstOrDefault().SubjectId.ToString(), topicId.ToString());
+
+            string filePath = Path.Combine(dirPath, fileName);
+
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);
+                return Json(new { success = true, message = "File deleted successfully" });
+            }
+            else
+            {
+                return Json(new { success = false, message = "File not found" });
+            }
+        }
+        [HttpPost]
+        public IActionResult DeleteStudent(int studentId)
+        {
+            var student = _context.Students
+                .Include(x=>x.Class)
+                  .ThenInclude(x=>x.Subjects)
+                    .ThenInclude(x=>x.Topics).
+                Include(x=>x.Class)
+                 .ThenInclude(x => x.Students).
+                FirstOrDefault(x=>x.StudentId == studentId);
+            if (student != null)
+            {
+                _context.Students.Remove(student);
+                _context.SaveChanges();
+                return Json(new { success = true, message = "Student deleted successfully" });
+            }
+            return Json(new { success = false, message = "Student not found" });
+        }
+        [HttpPost]
+        public IActionResult DeleteClass(int classId)
+        {
+            var @class = _context.Classes
+                .Include(x=>x.Subjects)
+                    .ThenInclude(x=>x.Topics)
+                .Include(x=>x.Students).FirstOrDefault(x=>x.ClassId == classId);
+            if (@class != null)
+            {
+                foreach(var sub in @class.Subjects)
+                {
+                    _context.Topics.RemoveRange(sub.Topics);
+                }
+                _context.Subjects.RemoveRange(@class.Subjects);
+                _context.Students.RemoveRange(@class.Students);
+                _context.Classes.Remove(@class);
+                _context.SaveChanges();
+                return Json(new { success = true, message = "Class deleted successfully" });
+            }
+            return Json(new { success = false, message = "Class not found" });
+        }
+        [HttpPost]
+        public IActionResult DeleteSubject(int subjectId)
+        {
+            var subject = _context.Subjects
+                .Include(x=>x.Topics)
+                .FirstOrDefault(x=>x.SubjectId == subjectId);
+            if (subject != null)
+            {
+                _context.Topics.RemoveRange(subject.Topics);
+                _context.Subjects.Remove(subject);
+                _context.SaveChanges();
+                return Json(new { success = true, message = "Subject deleted successfully" });
+            }
+            return Json(new { success = false, message = "Subject not found" });
+        }
+        [HttpPost]
+        public IActionResult DeleteTopic(int topicId)
+        {
+            var topic = _context.Topics.Find(topicId);
+            if (topic != null)
+            {
+                _context.Topics.Remove(topic);
+                _context.SaveChanges();
+                return Json(new { success = true, message = "Topic deleted successfully" });
+            }
+            return Json(new { success = false, message = "Topic not found" });
+        }
         public IActionResult Login()
         {
             return View();

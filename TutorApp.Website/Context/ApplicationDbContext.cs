@@ -14,6 +14,7 @@ namespace TutorApp.Website.Context
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Topic> Topics { get; set; }
         public DbSet<StudentFile> Files { get; set; }
+        public DbSet<Setting> Settings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -67,6 +68,13 @@ namespace TutorApp.Website.Context
                 new StudentFile { FileId = 2, FileName = "Science Project", TopicId = 3, FilePath = "/" },
                 new StudentFile { FileId = 3, FileName = "History Essay", TopicId = 4, FilePath = "/" }
             // Add more files as needed
+            );
+            // Seed data for settings
+            modelBuilder.Entity<Setting>().HasData(
+                new Setting {SettingId=1, Key= "logo-url", Value= "http://placehold.it/259x30" },
+                new Setting { SettingId = 2, Key = "email", Value = "support@themerex.net" },
+                new Setting { SettingId = 3, Key = "phone", Value = "0 800 123-4567" },
+                new Setting { SettingId = 4, Key = "address", Value = "put address here" }
             );
 
             // Student -> Class (One-to-Many)
