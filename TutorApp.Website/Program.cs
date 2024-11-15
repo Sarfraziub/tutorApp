@@ -54,6 +54,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/Account/Login";
         options.LogoutPath = "/Account/Logout";
     });
+builder.Services.AddAuthorization(options =>
+{
+	options.AddPolicy("Student", policy => policy.RequireRole("Student"));
+	options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+});
 
 var app = builder.Build();
 

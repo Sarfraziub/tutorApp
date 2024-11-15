@@ -53,7 +53,7 @@
 
                 <div class="form-group">
                     <label for="className" style="font-weight: 700;"> Class:</label>
-                    <select asp-for="ClassId" style="border-radius:4px;padding: 0.45em 0.5em;" asp-items="@(new SelectList(ViewBag.Students,"StudentId","Name"))" class="form-control"></select>
+            <select asp-for="ClassId" style="border-radius:4px;padding: 0.45em 0.5em;" asp-items="@(new SelectList(ViewBag.Classes,"ClassId","ClassName"))" class="form-control"></select>
                 </div>
                 @if (Model.StudentId == 0)
                 {

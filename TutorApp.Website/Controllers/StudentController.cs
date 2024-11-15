@@ -7,8 +7,8 @@ using TutorApp.Website.ViewModels;
 
 namespace TutorApp.Website.Controllers
 {
-    [Authorize]
-    public class StudentController : Controller
+	[Authorize(Roles = Roles.Student)]
+	public class StudentController : Controller
     {
         private readonly SchoolDbContext _context;
 
@@ -16,7 +16,7 @@ namespace TutorApp.Website.Controllers
         {
             _context = context;
         }
-        
+        [Authorize(Roles=Roles.Student)]
         public async Task<IActionResult> Dashboard()
         {
             var student = _context.Students.FirstOrDefault(s => s.Email == User.Identity.Name);

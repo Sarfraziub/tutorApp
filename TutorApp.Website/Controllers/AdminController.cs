@@ -25,25 +25,25 @@ namespace TutorApp.Website.Controllers
             _context = context;
             _passwordHasher = new PasswordHasher<Student>();
         }
-        [Authorize]
+        [Authorize(Policy = Roles.Admin)]
         public IActionResult Dashboard()
         {
             var student = _context.Students.FirstOrDefault(s => s.Email == User.Identity.Name);
             return View();
         }
-        [Authorize]
+        [Authorize(Roles = Roles.Admin)]
         public IActionResult Classes()
         {
             var classes = _context.Classes.ToList();
             return View(classes);
         }
-        [Authorize]
+        [Authorize(Policy = Roles.Admin)]
         public IActionResult Students()
         {
             var students = _context.Students.ToList();
             return View(students);
         }
-        [Authorize]
+        [Authorize(Policy = Roles.Admin)]
         public IActionResult Subjects(int classId)
         {
             var subjects = _context.Subjects.Where(x=>x.ClassId == classId).ToList();
@@ -51,14 +51,14 @@ namespace TutorApp.Website.Controllers
             ViewBag.ClassId = classId;
             return View(subjects);
         }
-        [Authorize]
+        [Authorize(Policy = Roles.Admin)]
         public IActionResult AddSubject(int classId)
         {
             Subject subject = new Subject();
             subject.ClassId = classId;
             return View(subject);
         }
-        [Authorize]
+        [Authorize(Policy = Roles.Admin)]
         [HttpPost]
         public IActionResult AddSubject(Subject subject)
         {
@@ -70,29 +70,29 @@ namespace TutorApp.Website.Controllers
             }
             return View(subject);
         }
-        [Authorize]
+        [Authorize(Policy = Roles.Admin)]
         public IActionResult AddStudent()
         {
             Student student = new Student();
-            ViewBag.Students = _context.Students.ToList();
+            ViewBag.Classes = _context.Classes.ToList();
 
             return View(student);
         }
-        [Authorize]
+        [Authorize(Policy = Roles.Admin)]
         public IActionResult EditStudent(int studentId)
         {
-            ViewBag.Students = _context.Students.ToList();
+            ViewBag.Classes = _context.Classes.ToList();
             Student student = new Student();
             student = _context.Students.Where(x=>x.StudentId == studentId).FirstOrDefault();
             return View("AddStudent", student);
         }
-        [Authorize]
+        [Authorize(Policy = Roles.Admin)]
         [HttpPost]
         public IActionResult AddStudent(Student student)
         {
             if(student.StudentId==0&&(student.ConfirmPassword != student.PasswordHash || string.IsNullOrEmpty(student.ConfirmPassword)))
             {
-                ViewBag.Students = _context.Students.ToList();
+                ViewBag.Classes = _context.Classes.ToList();
                 ViewBag.errorMsg = "passord & confirm password are mismatch!";
                 return View(student);
             }
@@ -114,13 +114,13 @@ namespace TutorApp.Website.Controllers
             ViewBag.errorMsg = "please fill all fields!";
             return View(student);
         }
-        [Authorize]
+        [Authorize(Policy = Roles.Admin)]
         public IActionResult AddClass()
         {
             Class _class = new Class();
             return View(_class);
         }
-        [Authorize]
+        [Authorize(Policy = Roles.Admin)]
         [HttpPost]
         public IActionResult AddClass(Class _class)
         {
@@ -133,7 +133,7 @@ namespace TutorApp.Website.Controllers
             return View(_class);
         }
 
-        [Authorize]
+        [Authorize(Policy = Roles.Admin)]
         public IActionResult Topics(int subjectId)
         {
             var subjects = _context.Topics.Where(x => x.SubjectId== subjectId).ToList();
@@ -142,14 +142,14 @@ namespace TutorApp.Website.Controllers
             ViewBag.ClassId = _context.Subjects.Where(x => x.SubjectId == subjectId).FirstOrDefault().ClassId;
             return View(subjects);
         }
-        [Authorize]
+        [Authorize(Policy = Roles.Admin)]
         public IActionResult AddTopic(int subjectId)
         {
             Topic topic = new Topic();
             topic.SubjectId = subjectId;
             return View(topic);
         }
-        [Authorize]
+        [Authorize(Policy = Roles.Admin)]
         [HttpPost]
         public IActionResult AddTopic(Topic topic)
         {
@@ -161,7 +161,7 @@ namespace TutorApp.Website.Controllers
             }
             return View(topic);
         }
-        [Authorize]
+        [Authorize(Policy = Roles.Admin)]
         public IActionResult TopicFiles(int topicId)
         {
             Topic topic = _context.Topics.Where(x => x.TopicId == topicId).FirstOrDefault();
@@ -192,7 +192,7 @@ namespace TutorApp.Website.Controllers
             ViewBag.TopicId = topicId;
             return View(files);
         }
-        [Authorize]
+        [Authorize(Policy = Roles.Admin)]
         public IActionResult AddTopicFile(int topicId)
         {
             FileUploadModel uploadModel = new FileUploadModel();
@@ -204,7 +204,7 @@ namespace TutorApp.Website.Controllers
             uploadModel.ClassId = _context.Subjects.Where(x => x.SubjectId == topic.SubjectId).FirstOrDefault().ClassId;
             return View(uploadModel);
         }
-        [Authorize]
+        [Authorize(Policy = Roles.Admin)]
         [HttpPost]
         public IActionResult AddTopicFile(FileUploadModel model)
         {
@@ -231,7 +231,7 @@ namespace TutorApp.Website.Controllers
             return RedirectToAction("TopicFiles", new { classId = model.ClassId, subjectId = model.SubjectId, topicId = model.TopicId });
         }
 
-        [Authorize]
+        [Authorize(Policy = Roles.Admin)]
         [HttpPost]
         public IActionResult DeleteTopicFile(int topicId, string fileName)
         {
@@ -304,7 +304,8 @@ namespace TutorApp.Website.Controllers
             }
             return Json(new { success = false, message = "Subject not found" });
         }
-        [HttpPost]
+		[Authorize(Policy = "AdminPolicy")]
+		[HttpPost]
         public IActionResult DeleteTopic(int topicId)
         {
             var topic = _context.Topics.Find(topicId);
@@ -340,7 +341,7 @@ namespace TutorApp.Website.Controllers
                     new Claim(ClaimTypes.Name, admin.Email),
                     new Claim(ClaimTypes.NameIdentifier, admin.AdminId.ToString()),
                     new Claim("AdminName", admin.Name.ToString()),
-                    // You can add more claims if needed
+					new Claim(ClaimTypes.Role, Roles.Admin)
                 };
 
                         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -364,6 +365,11 @@ namespace TutorApp.Website.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

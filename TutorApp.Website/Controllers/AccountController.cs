@@ -83,8 +83,8 @@ namespace TutorApp.Website.Controllers
                             new Claim(ClaimTypes.Name, student.Email),
                             new Claim(ClaimTypes.NameIdentifier, student.StudentId.ToString()),
                             new Claim("StudentName", student.Name.ToString()),
-                            new Claim("ClassId", student.ClassId.ToString())
-
+                            new Claim("ClassId", student.ClassId.ToString()),
+							new Claim(ClaimTypes.Role, Roles.Student)
                             // You can add more claims if needed
                         };
 
@@ -123,6 +123,9 @@ namespace TutorApp.Website.Controllers
             // Redirect to the homepage or login page after logout
             return RedirectToAction("Index", "Home");
         }
-
-    }
+		public IActionResult AccessDenied()
+		{
+			return View();
+		}
+	}
 }

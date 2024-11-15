@@ -133,7 +133,10 @@
 									</ul> *@
 								</li>
 								<li class="menu-item menu-item-has-children">
-									<a href="">Subjects</a>
+									@if (User.IsInRole("Student"))
+									{
+										<a href="/student/dashboard">Subjects</a>
+									}
 									@* <ul class="sub-menu">
 										<li class="menu-item"><a href="courses-streampage.html">All courses</a></li>
 										<li class="menu-item"><a href="free-course.html">Free course</a></li>
